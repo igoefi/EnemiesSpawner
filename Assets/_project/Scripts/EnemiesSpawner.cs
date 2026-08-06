@@ -14,7 +14,7 @@ public class EnemiesSpawner : MonoBehaviour
     private void Start()
     {
         _pool = new(
-            CreateCube,
+            CreateEnemy,
             OnGetFromPool,
             OnRealesedToPool,
             (Enemy enemy) => Destroy(enemy.gameObject),
@@ -23,7 +23,7 @@ public class EnemiesSpawner : MonoBehaviour
         StartCoroutine(Spawn());
     }
 
-    private Enemy CreateCube()
+    private Enemy CreateEnemy()
     {
         var enemy = Instantiate(_enemyPrefab);
         enemy.SetPool(_pool);
