@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -8,21 +7,23 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _deathTime = 10;
 
     private ObjectPool<Enemy> _pool;
+    private Transform _target;
 
-    private void Update() =>
+    private void Update()
+    {
+        transform.LookAt(_target);
         transform.position += transform.forward * _speed * Time.deltaTime;
+    }
 
     public void SetPool(ObjectPool<Enemy> pool) =>
         _pool = pool;
 
-    private void OnEnable()
-    {
-        StartCoroutine(DeathDelay());
-    }
+    public void SetTarget(Transform target) =>
+        _target = target;
 
-    private IEnumerator DeathDelay()
+    private void OnCollisionEnter(Collision collision)
     {
-        yield return new WaitForSeconds(_deathTime);
-        _pool.Release(this);
+        if (collision.collider.gameObject == _target.gameObject)
+            _pool.Release(this);
     }
 }
